@@ -33,7 +33,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen }) => {
   };
 
   return (
-    <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-[#0F172A] text-slate-300 transition-transform duration-300 ease-in-out flex flex-col justify-between ${
+    <aside className={`fixed top-0 bottom-0 left-0 h-screen max-h-screen z-40 w-64 bg-[#0F172A] text-slate-300 transition-transform duration-300 ease-in-out flex flex-col justify-between overflow-y-auto ${
       sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
     }`}>
       {/* Top Logo Header */}

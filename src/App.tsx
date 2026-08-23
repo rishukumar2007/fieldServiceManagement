@@ -47,13 +47,13 @@ const MainContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 flex">
+    <div className="h-screen max-h-screen w-full bg-slate-50 font-sans text-slate-900 flex overflow-hidden">
       <Sidebar sidebarOpen={sidebarOpen} />
 
-      <div className="flex-1 md:pl-64 flex flex-col min-w-0">
+      <div className="flex-1 md:pl-64 flex flex-col h-screen max-h-screen min-w-0 overflow-hidden">
         <Header />
 
-        <main className="flex-1 pb-12">
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 pb-24">
           {renderActiveView()}
         </main>
       </div>

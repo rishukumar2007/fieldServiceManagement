@@ -74,10 +74,10 @@ export const LoginPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 font-sans">
+    <div className="h-screen max-h-screen w-full bg-slate-50 flex items-center justify-center p-4 md:p-6 overflow-y-auto font-sans">
       
       {/* Central Split Container Matching Dashboard Design System */}
-      <div className="max-w-4xl w-full bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-12 min-h-[620px]">
+      <div className="max-w-4xl w-full bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-12 max-h-[92vh] my-auto">
         
         {/* Left Dark Navy Brand Sidebar (#0F172A) */}
         <div className="md:col-span-5 bg-[#0F172A] p-8 text-white flex flex-col justify-between relative overflow-hidden">
