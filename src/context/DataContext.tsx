@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { 
-  User, Customer, Site, WorkOrder, WorkOrderStatus, Priority, 
+  User, Customer, Site, WorkOrder, WorkOrderStatus, Priority, Role,
   WorkOrderStatusHistory, Part, PartUsage, TimeLog, TechnicianPerformance,
   NotificationItem
 } from '../types';
@@ -15,7 +15,11 @@ interface DataContextType {
   isAuthenticated: boolean;
   currentUser: User;
   setCurrentUser: (user: User) => void;
-  login: (email: string, password?: string) => boolean;
+  login: (email: string, password?: string, role?: Role) => boolean;
+  loginWithOAuth: (
+    provider: 'google' | 'github', 
+    profile: { email: string; name?: string; avatarUrl?: string; role?: Role }
+  ) => boolean;
   logout: () => void;
   users: User[];
   customers: Customer[];
@@ -227,7 +231,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return saved ? JSON.parse(saved) : INITIAL_USERS[0];
   });
 
-  const [users] = useState<User[]>(INITIAL_USERS);
+  const [users, setUsers] = useState<User[]>(INITIAL_USERS);
   const [customers] = useState<Customer[]>(INITIAL_CUSTOMERS);
   const [sites] = useState<Site[]>(INITIAL_SITES);
   const [workOrders, setWorkOrders] = useState<WorkOrder[]>(() => {
@@ -254,7 +258,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('keystone_work_orders', JSON.stringify(workOrders));
   }, [workOrders]);
 
-  const login = (email: string): boolean => {
+  const login = (email: string, _password?: string, role: Role = 'MANAGER'): boolean => {
     const found = users.find(u => u.email.toLowerCase() === email.toLowerCase());
     if (found) {
       setCurrentUser(found);
@@ -262,7 +266,69 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       addToast('success', `Welcome back, ${found.name}! Signed in as ${found.role}.`);
       return true;
     }
+    
+    // Dynamic real email / Gmail authentication
+    if (email && email.includes('@')) {
+      const nameFromEmail = email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      const newUser: User = {
+        id: `usr-${Date.now()}`,
+        name: nameFromEmail || 'Verified User',
+        email: email.toLowerCase(),
+        role: role,
+        avatarUrl: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80`
+      };
+      setUsers(prev => [...prev, newUser]);
+      setCurrentUser(newUser);
+      setIsAuthenticated(true);
+      addToast('success', `Signed in with ${email}! Welcome to KEYSTONE.`);
+      return true;
+    }
     return false;
+  };
+
+  const loginWithOAuth = (
+    provider: 'google' | 'github',
+    profile: { email: string; name?: string; avatarUrl?: string; role?: Role }
+  ): boolean => {
+    const role: Role = profile.role || 'MANAGER';
+    const email = profile.email.trim().toLowerCase();
+    
+    // Check if user already exists
+    const existing = users.find(u => u.email.toLowerCase() === email);
+    if (existing) {
+      const updatedUser: User = {
+        ...existing,
+        name: profile.name || existing.name,
+        avatarUrl: profile.avatarUrl || existing.avatarUrl,
+        role: profile.role || existing.role
+      };
+      setUsers(prev => prev.map(u => u.id === existing.id ? updatedUser : u));
+      setCurrentUser(updatedUser);
+      setIsAuthenticated(true);
+      const providerLabel = provider === 'google' ? 'Google' : 'GitHub';
+      addToast('success', `Signed in with ${providerLabel} as ${updatedUser.name} (${updatedUser.role}).`);
+      return true;
+    }
+
+    const fallbackName = email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    const defaultAvatar = provider === 'github'
+      ? `https://github.com/${email.split('@')[0]}.png`
+      : `https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80`;
+
+    const newUser: User = {
+      id: `usr-${Date.now()}`,
+      name: profile.name || fallbackName || (provider === 'google' ? 'Google User' : 'GitHub User'),
+      email: email,
+      role: role,
+      avatarUrl: profile.avatarUrl || defaultAvatar
+    };
+
+    setUsers(prev => [...prev, newUser]);
+    setCurrentUser(newUser);
+    setIsAuthenticated(true);
+    const providerLabel = provider === 'google' ? 'Google' : 'GitHub';
+    addToast('success', `Welcome to KEYSTONE! Signed in with ${providerLabel} as ${newUser.name} (${newUser.role}).`);
+    return true;
   };
 
   const logout = () => {
@@ -550,6 +616,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       currentUser,
       setCurrentUser,
       login,
+      loginWithOAuth,
       logout,
       users,
       customers,
