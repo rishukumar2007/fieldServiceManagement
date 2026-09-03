@@ -30,6 +30,20 @@ export class KeystoneApiClient {
     return data;
   }
 
+  // POST /api/auth/oauth (Google / GitHub OAuth login)
+  static async oauthLogin(provider: 'google' | 'github', email: string, name?: string, avatarUrl?: string, role?: string) {
+    const res = await fetch(`${API_BASE_URL}/auth/oauth`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ provider, email, name, avatarUrl, role })
+    });
+    if (!res.ok) throw new Error('OAuth authentication failed');
+    const data = await res.json();
+    this.token = data.token;
+    if (this.token) localStorage.setItem('keystone_jwt_token', this.token);
+    return data;
+  }
+
   // GET /api/work-orders (role-scoped, filterable, paginated)
   static async getWorkOrders(params?: { status?: WorkOrderStatus; priority?: Priority; page?: number }) {
     const query = new URLSearchParams(params as any).toString();

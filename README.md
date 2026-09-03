@@ -80,7 +80,7 @@ The platform comes pre-seeded with 4 reference role accounts for instant testing
 ### 1. Run the Spring Boot Java Backend
 ```bash
 cd fieldServiceManagement
-./mvnw spring-boot:run
+./mvnw spring-boot:run;
 ```
 - **Backend API**: `http://localhost:8080/api`
 - **Swagger UI Documentation**: `http://localhost:8080/swagger-ui.html`
