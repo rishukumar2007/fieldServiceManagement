@@ -110,3 +110,14 @@ CREATE TABLE IF NOT EXISTS notifications (
     is_read BOOLEAN NOT NULL,
     work_order_id VARCHAR(64)
 );
+
+-- 10. Database Performance Indexes
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_work_orders_status ON work_orders(status);
+CREATE INDEX IF NOT EXISTS idx_work_orders_priority ON work_orders(priority);
+CREATE INDEX IF NOT EXISTS idx_work_orders_customer ON work_orders(customer_id);
+CREATE INDEX IF NOT EXISTS idx_work_orders_assigned ON work_orders(assigned_to_id);
+CREATE INDEX IF NOT EXISTS idx_wosh_wo_id ON work_order_status_history(work_order_id);
+CREATE INDEX IF NOT EXISTS idx_part_usages_wo_id ON part_usages(work_order_id);
+CREATE INDEX IF NOT EXISTS idx_time_logs_wo_id ON time_logs(work_order_id);
+
