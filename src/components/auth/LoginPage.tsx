@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
 import { 
-  Hexagon, Lock, Mail, ArrowRight, ShieldCheck, UserCheck, 
-  Wrench, Building2, CheckCircle2, UserPlus, LogIn, X, 
+  Hexagon, Lock, Mail, ArrowRight, CheckCircle2, UserPlus, LogIn, X, 
   Sparkles, RefreshCw
 } from 'lucide-react';
 import type { Role } from '../../types';
@@ -18,7 +17,7 @@ export const LoginPage: React.FC = () => {
   // OAuth Modal States
   const [oauthModalOpen, setOauthModalOpen] = useState(false);
   const [oauthProvider, setOauthProvider] = useState<'google' | 'github'>('google');
-  const [oauthStep, setOauthStep] = useState<'picker' | 'custom' | 'authorizing'>('picker');
+  const [oauthStep, setOauthStep] = useState<'custom' | 'authorizing'>('custom');
   const [customInput, setCustomInput] = useState('');
   const [customName, setCustomName] = useState('');
   const [oauthRole, setOauthRole] = useState<Role>('MANAGER');
@@ -40,7 +39,7 @@ export const LoginPage: React.FC = () => {
 
   const openOAuthModal = (provider: 'google' | 'github') => {
     setOauthProvider(provider);
-    setOauthStep('picker');
+    setOauthStep('custom');
     setCustomInput('');
     setCustomName('');
     setOauthRole(selectedRole);
@@ -54,113 +53,6 @@ export const LoginPage: React.FC = () => {
       setOauthModalOpen(false);
     }, 700);
   };
-
-  const handleQuickLogin = (userEmail: string) => {
-    login(userEmail, 'password123');
-  };
-
-  // Google Pre-configured accounts for 1-click login
-  const googleAccounts = [
-    {
-      name: 'Alex Miller',
-      email: 'alex.m.keystone@gmail.com',
-      role: 'MANAGER' as Role,
-      roleLabel: 'Field Operations Manager',
-      avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80',
-    },
-    {
-      name: 'Sarah Vance',
-      email: 'sarah.vance.ops@gmail.com',
-      role: 'DISPATCHER' as Role,
-      roleLabel: 'Senior Dispatcher',
-      avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80',
-    },
-    {
-      name: 'Marcus Chen',
-      email: 'marcus.chen.tech@gmail.com',
-      role: 'TECHNICIAN' as Role,
-      roleLabel: 'Field Specialist Technician',
-      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80',
-    },
-    {
-      name: 'Acme Corp Client',
-      email: 'facilities@acme-client.com',
-      role: 'CUSTOMER' as Role,
-      roleLabel: 'Corporate Facility Client',
-      avatarUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80',
-    }
-  ];
-
-  // GitHub Pre-configured developer accounts
-  const githubAccounts = [
-    {
-      username: 'octocat',
-      name: 'The Octocat',
-      email: 'octocat@github.com',
-      role: 'TECHNICIAN' as Role,
-      roleLabel: 'Lead Hardware Engineer',
-      avatarUrl: 'https://github.com/octocat.png',
-    },
-    {
-      username: 'torvalds',
-      name: 'Linus Torvalds',
-      email: 'torvalds@kernel.org',
-      role: 'MANAGER' as Role,
-      roleLabel: 'Infrastructure Admin',
-      avatarUrl: 'https://github.com/torvalds.png',
-    },
-    {
-      username: 'defunkt',
-      name: 'Chris Wanstrath',
-      email: 'chris@github.com',
-      role: 'DISPATCHER' as Role,
-      roleLabel: 'Dispatch Architect',
-      avatarUrl: 'https://github.com/defunkt.png',
-    },
-    {
-      username: 'github',
-      name: 'GitHub Enterprise Hub',
-      email: 'operations@github.com',
-      role: 'CUSTOMER' as Role,
-      roleLabel: 'Enterprise Client',
-      avatarUrl: 'https://github.com/github.png',
-    }
-  ];
-
-  const seedProfiles = [
-    {
-      role: 'MANAGER' as Role,
-      title: 'Manager / Admin',
-      email: 'john.m@meridian.com',
-      name: 'John Miller',
-      icon: ShieldCheck,
-      badgeColor: 'bg-purple-100 text-purple-700 border-purple-200 hover:bg-purple-200/60'
-    },
-    {
-      role: 'DISPATCHER' as Role,
-      title: 'Dispatcher',
-      email: 'sarah.v@meridian.com',
-      name: 'Sarah Vance',
-      icon: UserCheck,
-      badgeColor: 'bg-blue-100 text-blue-700 border-blue-200 hover:bg-blue-200/60'
-    },
-    {
-      role: 'TECHNICIAN' as Role,
-      title: 'Field Technician',
-      email: 'mike.smith@meridian.com',
-      name: 'Mike Smith',
-      icon: Wrench,
-      badgeColor: 'bg-emerald-100 text-emerald-700 border-emerald-200 hover:bg-emerald-200/60'
-    },
-    {
-      role: 'CUSTOMER' as Role,
-      title: 'Customer Client',
-      email: 'alice@acmecorp.com',
-      name: 'Alice Acme',
-      icon: Building2,
-      badgeColor: 'bg-amber-100 text-amber-700 border-amber-200 hover:bg-amber-200/60'
-    }
-  ];
 
   return (
     <div className="h-screen max-h-screen w-full bg-slate-100 flex items-center justify-center p-4 md:p-6 overflow-y-auto font-sans relative">
@@ -192,7 +84,7 @@ export const LoginPage: React.FC = () => {
                 Enterprise Field Service & SLA Resolution Platform
               </h2>
               <p className="text-xs text-slate-400 leading-relaxed">
-                Seamlessly authenticate using your Google account, GitHub profile, or enterprise company credentials.
+                Sign in with your email address or authenticate directly with your Google or GitHub account.
               </p>
             </div>
           </div>
@@ -201,15 +93,15 @@ export const LoginPage: React.FC = () => {
           <div className="space-y-2.5 pt-6 border-t border-slate-800 text-xs text-slate-300 font-medium relative z-10">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>Google & GitHub OAuth 2.0 Logins</span>
+              <span>Google & GitHub Single Sign-On</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>Stateless JWT & Role Isolation</span>
+              <span>Stateless JWT Security Engine</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>Governed 4-Role State Engine</span>
+              <span>Governed 4-Role Access Control</span>
             </div>
           </div>
 
@@ -226,14 +118,14 @@ export const LoginPage: React.FC = () => {
                   {isSignUp ? 'Create your Account' : 'Sign In to KEYSTONE'}
                 </h2>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  {isSignUp ? 'Join with Google, GitHub, or your email.' : 'Sign in with your social account or credentials.'}
+                  {isSignUp ? 'Sign up with your email, Google, or GitHub account.' : 'Enter your email address and password to log in.'}
                 </p>
               </div>
 
               <button
                 type="button"
                 onClick={() => { setIsSignUp(!isSignUp); setErrorMsg(''); }}
-                className="text-xs font-semibold text-blue-600 hover:text-blue-700 underline"
+                className="text-xs font-semibold text-blue-600 hover:text-blue-700 underline cursor-pointer"
               >
                 {isSignUp ? 'Already have an account?' : 'Need an account?'}
               </button>
@@ -295,7 +187,7 @@ export const LoginPage: React.FC = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="yourname@meridian.com"
+                  placeholder="yourname@gmail.com"
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium"
                 />
               </div>
@@ -331,7 +223,7 @@ export const LoginPage: React.FC = () => {
                     key={item.r}
                     type="button"
                     onClick={() => setSelectedRole(item.r)}
-                    className={`py-1.5 px-2.5 rounded-xl border text-[11px] font-semibold text-left transition-all ${
+                    className={`py-1.5 px-2.5 rounded-xl border text-[11px] font-semibold text-left transition-all cursor-pointer ${
                       selectedRole === item.r 
                         ? 'bg-blue-50 border-blue-500 text-blue-700 shadow-sm' 
                         : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
@@ -353,37 +245,9 @@ export const LoginPage: React.FC = () => {
             </button>
           </form>
 
-          {/* Quick Demo Reference Logins */}
-          <div className="border-t border-slate-100 pt-3 space-y-2">
-            <details className="text-[11px] text-slate-500 font-medium">
-              <summary className="cursor-pointer font-bold text-slate-600 hover:text-slate-900 select-none">
-                Demo Reference Accounts (1-Click Direct Access)
-              </summary>
-              <div className="grid grid-cols-2 gap-2 pt-2">
-                {seedProfiles.map((p) => {
-                  const Icon = p.icon;
-                  return (
-                    <button
-                      key={p.role}
-                      type="button"
-                      onClick={() => handleQuickLogin(p.email)}
-                      className={`p-2 rounded-xl border text-left transition-all space-y-0.5 cursor-pointer ${p.badgeColor}`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-[9px] font-extrabold uppercase">{p.role}</span>
-                        <Icon className="w-3 h-3" />
-                      </div>
-                      <p className="font-bold text-[11px] text-slate-900 truncate">{p.name}</p>
-                    </button>
-                  );
-                })}
-              </div>
-            </details>
-          </div>
-
         </div>
 
-        </div>
+      </div>
 
       {/* Interactive Keystone OAuth Modal */}
       {oauthModalOpen && (
@@ -424,7 +288,7 @@ export const LoginPage: React.FC = () => {
 
               <button 
                 onClick={() => setOauthModalOpen(false)}
-                className="p-1.5 text-slate-400 hover:text-white rounded-lg transition-colors"
+                className="p-1.5 text-slate-400 hover:text-white rounded-lg transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -437,8 +301,8 @@ export const LoginPage: React.FC = () => {
               <div className="flex bg-slate-100 p-1 rounded-xl mb-5 border border-slate-200 text-xs">
                 <button
                   type="button"
-                  onClick={() => { setOauthProvider('google'); setOauthStep('picker'); }}
-                  className={`flex-1 py-1.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all ${
+                  onClick={() => { setOauthProvider('google'); setOauthStep('custom'); }}
+                  className={`flex-1 py-1.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                     oauthProvider === 'google' 
                       ? 'bg-white text-slate-900 shadow-sm' 
                       : 'text-slate-500 hover:text-slate-800'
@@ -455,8 +319,8 @@ export const LoginPage: React.FC = () => {
 
                 <button
                   type="button"
-                  onClick={() => { setOauthProvider('github'); setOauthStep('picker'); }}
-                  className={`flex-1 py-1.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all ${
+                  onClick={() => { setOauthProvider('github'); setOauthStep('custom'); }}
+                  className={`flex-1 py-1.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                     oauthProvider === 'github' 
                       ? 'bg-[#24292F] text-white shadow-sm' 
                       : 'text-slate-500 hover:text-slate-800'
@@ -469,79 +333,14 @@ export const LoginPage: React.FC = () => {
                 </button>
               </div>
 
-              {/* Step 1: Account Chooser / Preset Selection */}
-              {oauthStep === 'picker' && (
-                <div className="space-y-4 text-xs">
-                  
-                  <div className="flex items-center justify-between">
-                    <p className="font-semibold text-slate-700">Choose an account to continue:</p>
-                    <button
-                      type="button"
-                      onClick={() => setOauthStep('custom')}
-                      className="text-blue-600 font-bold hover:underline"
-                    >
-                      Use another account
-                    </button>
-                  </div>
-
-                  <div className="space-y-2">
-                    {(oauthProvider === 'google' ? googleAccounts : githubAccounts).map((acc) => (
-                      <button
-                        key={acc.email}
-                        type="button"
-                        onClick={() => executeOAuthLogin({
-                          email: acc.email,
-                          name: acc.name,
-                          avatarUrl: acc.avatarUrl,
-                          role: acc.role
-                        })}
-                        className="w-full flex items-center justify-between p-3 rounded-2xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/40 transition-all text-left group cursor-pointer"
-                      >
-                        <div className="flex items-center gap-3">
-                          <img 
-                            src={acc.avatarUrl} 
-                            alt={acc.name} 
-                            className="w-9 h-9 rounded-full object-cover border border-slate-200"
-                          />
-                          <div>
-                            <div className="flex items-center gap-1.5">
-                              <span className="font-bold text-slate-900 text-xs">{acc.name}</span>
-                              <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600 font-bold">
-                                {acc.role}
-                              </span>
-                            </div>
-                            <p className="text-[11px] text-slate-500 font-mono">{acc.email}</p>
-                          </div>
-                        </div>
-
-                        <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
-                    <span>OAuth 2.0 PKCE Protected</span>
-                    <span>Single Sign-On (SSO)</span>
-                  </div>
-
-                </div>
-              )}
-
-              {/* Step 2: Custom Google Email or GitHub Username */}
+              {/* Step 1: Real Email / Username Input */}
               {oauthStep === 'custom' && (
                 <div className="space-y-4 text-xs">
                   
-                  <div className="flex items-center justify-between">
-                    <p className="font-semibold text-slate-700">
+                  <div>
+                    <p className="font-semibold text-slate-700 mb-1">
                       {oauthProvider === 'google' ? 'Enter your Google / Gmail account:' : 'Enter your GitHub username or email:'}
                     </p>
-                    <button
-                      type="button"
-                      onClick={() => setOauthStep('picker')}
-                      className="text-blue-600 font-bold hover:underline"
-                    >
-                      Back to list
-                    </button>
                   </div>
 
                   {/* Input Field */}
@@ -553,14 +352,14 @@ export const LoginPage: React.FC = () => {
                       type={oauthProvider === 'google' ? 'email' : 'text'}
                       value={customInput}
                       onChange={(e) => setCustomInput(e.target.value)}
-                      placeholder={oauthProvider === 'google' ? 'john.doe@gmail.com' : 'octocat or user@domain.com'}
+                      placeholder={oauthProvider === 'google' ? 'yourname@gmail.com' : 'yourname or user@domain.com'}
                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium"
                     />
                   </div>
 
                   {/* Optional Display Name */}
                   <div>
-                    <label className="block text-slate-700 font-semibold mb-1">Display Name (Optional)</label>
+                    <label className="block text-slate-700 font-semibold mb-1">Full Name (Optional)</label>
                     <input 
                       type="text" 
                       value={customName}
@@ -590,7 +389,7 @@ export const LoginPage: React.FC = () => {
 
                   {/* Role Selector */}
                   <div>
-                    <label className="block text-slate-700 font-semibold mb-1">Role Context to Assign</label>
+                    <label className="block text-slate-700 font-semibold mb-1">Select Role Context</label>
                     <div className="grid grid-cols-2 gap-2">
                       {[
                         { r: 'MANAGER' as Role, l: 'Manager / Admin' },
@@ -602,7 +401,7 @@ export const LoginPage: React.FC = () => {
                           key={item.r}
                           type="button"
                           onClick={() => setOauthRole(item.r)}
-                          className={`py-1.5 px-2.5 rounded-xl border text-[11px] font-semibold text-left transition-all ${
+                          className={`py-1.5 px-2.5 rounded-xl border text-[11px] font-semibold text-left transition-all cursor-pointer ${
                             oauthRole === item.r 
                               ? 'bg-blue-50 border-blue-500 text-blue-700 shadow-sm' 
                               : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
@@ -639,7 +438,7 @@ export const LoginPage: React.FC = () => {
                 </div>
               )}
 
-              {/* Step 3: Authorizing Simulation Spinner */}
+              {/* Step 2: Authorizing Spinner */}
               {oauthStep === 'authorizing' && (
                 <div className="py-8 px-4 text-center space-y-4">
                   <div className="relative w-14 h-14 mx-auto flex items-center justify-center">
