@@ -12,6 +12,10 @@
 
 ---
 
+> **Complete Technical Architecture & Database Specification**: See [DOCUMENTATION.md](file:///c:/Users/prateek%20sagar/.vscode/project-keystone/DOCUMENTATION.md) for full ER diagrams, API schemas, and deployment reports.
+
+---
+
 ## 🏗️ System Architecture & Layering
 
 The application follows a clean, decoupled layered architecture according to **Section 06** of the Zidio Technical Specification:
@@ -20,22 +24,24 @@ The application follows a clean, decoupled layered architecture according to **S
 keystone/
 ├── fieldServiceManagement/               # Spring Boot 3 (Java 21) Backend Service
 │   ├── src/main/java/com/KEYSTONE/fieldServiceManagement/
-│   │   ├── Config/                       # WebConfig (CORS), OpenApiConfig (Swagger), DataSeeder
-│   │   ├── Controller/                   # Thin REST Controllers (HTTP validation & DTO mapping)
-│   │   ├── Dto/                          # Data Transfer Objects (Auth, WorkOrder, Status, Parts, Time)
-│   │   ├── Entity/                       # JPA Domain Entities (User, Customer, Site, WorkOrder, etc.)
-│   │   ├── Enum/                         # Domain Enums (Role, Priority, WorkOrderStatus)
-│   │   ├── Repository/                   # Spring Data JPA Data Access Interfaces
-│   │   ├── Security/                     # Stateless JWT Filters & Security Configuration
-│   │   └── Service/                      # Business Rules, SLA Logic & Governed State Machine
+│   │   ├── config/                       # WebConfig (CORS), OpenApiConfig (Swagger), DataInitializer
+│   │   ├── controller/                   # Thin REST Controllers (HTTP validation & DTO mapping)
+│   │   ├── dto/                          # Data Transfer Objects (Auth, WorkOrder, Status, Parts, Time)
+│   │   ├── exception/                    # GlobalExceptionHandler & Domain Exceptions
+│   │   ├── model/                        # JPA Domain Entities (User, Customer, Site, WorkOrder, etc.)
+│   │   ├── repository/                   # Spring Data JPA Data Access Interfaces
+│   │   ├── security/                     # Stateless JWT Filters & Security Configuration
+│   │   └── service/                      # Business Rules, SLA Logic & Governed State Machine
 │   └── src/main/resources/
-│       ├── application.properties        # Configured for H2 (instant local) & MySQL / PostgreSQL
-│       └── db/migration/V1__init_schema.sql # Flyway Database Migrations
-└── src/                                  # React 18 + TypeScript (Vite) Frontend SPA
-    ├── components/                       # UI Components (Header, Sidebar, Dashboard, WorkOrdersPage, LoginPage)
-    ├── context/                          # DataContext & Authentication State Machine
-    ├── services/                         # KeystoneApiClient (Appendix B REST API Integration)
-    └── types/                            # TypeScript Domain Models
+│       ├── application.properties        # Flyway + H2 / MySQL Production Properties
+│       └── db/migration/V1__init_schema.sql # Flyway Database Migrations & Performance Indexes
+├── src/                                  # React 18 + TypeScript (Vite) Frontend SPA
+│   ├── components/                       # UI Components (Header, Sidebar, Dashboard, WorkOrdersPage, LoginPage)
+│   ├── context/                          # DataContext & Direct OAuth State Machine
+│   ├── services/                         # KeystoneApiClient (Appendix B REST API Integration)
+│   └── types/                            # TypeScript Domain Models
+├── vercel.json                           # Vercel Production SPA Routing Configuration
+└── DOCUMENTATION.md                      # Official Comprehensive Architecture & Database Report
 ```
 
 ---
