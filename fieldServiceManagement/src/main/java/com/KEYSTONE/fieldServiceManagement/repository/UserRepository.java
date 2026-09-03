@@ -1,7 +1,7 @@
 package com.KEYSTONE.fieldServiceManagement.repository;
 
-import com.KEYSTONE.fieldServiceManagement.model.Role;
 import com.KEYSTONE.fieldServiceManagement.model.User;
+import com.KEYSTONE.fieldServiceManagement.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +12,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findByEmail(String email);
     Optional<User> findByEmailIgnoreCase(String email);
+    boolean existsByEmail(String email);
     List<User> findByRole(Role role);
 }

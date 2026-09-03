@@ -2,7 +2,6 @@ package com.KEYSTONE.fieldServiceManagement.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
@@ -17,10 +16,9 @@ public class OpenApiConfig {
         final String securitySchemeName = "bearerAuth";
         return new OpenAPI()
                 .info(new Info()
-                        .title("Project KEYSTONE - Field Service Management API")
-                        .version("1.0.0")
-                        .description("REST API technical specification & OpenAPI documentation for Meridian Facilities Management field service platform.")
-                        .contact(new Contact().name("Zidio Development - Java Practice").email("support@zidio.in")))
+                        .title("Project KEYSTONE API")
+                        .version("1.0")
+                        .description("Enterprise Field Service Management REST Endpoints"))
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                 .components(new Components()
                         .addSecuritySchemes(securitySchemeName,

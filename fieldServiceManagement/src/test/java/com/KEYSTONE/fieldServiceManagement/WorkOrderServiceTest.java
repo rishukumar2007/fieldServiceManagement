@@ -5,7 +5,6 @@ import com.KEYSTONE.fieldServiceManagement.exception.InsufficientStockException;
 import com.KEYSTONE.fieldServiceManagement.exception.InvalidStatusTransitionException;
 import com.KEYSTONE.fieldServiceManagement.model.Priority;
 import com.KEYSTONE.fieldServiceManagement.model.WorkOrderStatus;
-import com.KEYSTONE.fieldServiceManagement.service.AuthService;
 import com.KEYSTONE.fieldServiceManagement.service.PartService;
 import com.KEYSTONE.fieldServiceManagement.service.WorkOrderService;
 import org.junit.jupiter.api.BeforeEach;

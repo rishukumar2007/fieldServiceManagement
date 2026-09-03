@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface WorkOrderStatusHistoryRepository extends JpaRepository<WorkOrderStatusHistory, String> {
-    List<WorkOrderStatusHistory> findByWorkOrderIdOrderByChangedAtAsc(String workOrderId);
     List<WorkOrderStatusHistory> findByWorkOrderIdOrderByChangedAtDesc(String workOrderId);
 }

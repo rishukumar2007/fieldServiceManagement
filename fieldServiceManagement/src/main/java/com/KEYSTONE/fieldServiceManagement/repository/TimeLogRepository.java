@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface TimeLogRepository extends JpaRepository<TimeLog, String> {
     List<TimeLog> findByWorkOrderId(String workOrderId);
+    List<TimeLog> findByTechnicianId(String technicianId);
 }
